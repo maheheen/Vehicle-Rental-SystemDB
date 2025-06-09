@@ -298,6 +298,37 @@ BEGIN
 END;
 
 
+ALTER PROCEDURE RegisterCustomers
+    @Username VARCHAR(50),
+    @PasswordHash VARCHAR(255),
+    @FirstName VARCHAR(50),
+    @LastName VARCHAR(50),
+    @Email VARCHAR(100),
+    @PhoneNumber VARCHAR(20),
+    @HomeAddress VARCHAR(255),
+    @DrivingLicenseNumber VARCHAR(30),
+    @NationalIDNumber VARCHAR(30),
+    @CNICImagePath VARCHAR(255),
+    @RoleID INT = 1
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO UserLogin (Username, PasswordHash, RoleID)
+    VALUES (@Username, @PasswordHash, @RoleID);
+
+    DECLARE @LoginID INT = SCOPE_IDENTITY();
+
+    INSERT INTO Customer (
+        FirstName, LastName, Email, PhoneNumber, HomeAddress,
+        DrivingLicenseNumber, NationalIDNumber, CNICImagePath, LoginID
+    )
+    VALUES (
+        @FirstName, @LastName, @Email, @PhoneNumber, @HomeAddress,
+        @DrivingLicenseNumber, @NationalIDNumber, @CNICImagePath, @LoginID
+    );
+END;
+
 
 --EXEC sp_rename 'Role', 'UserRole';
 --SELECT * FROM Customer
@@ -313,6 +344,8 @@ END;
 --DROP TABLE Customer
 --EXEC sp_rename 'Customer.UserName', 'LoginID' , 'COLUMN'
 --EXEC sp_rename 'LoginID' , 'UserLogin';
+
+
 
 
 
