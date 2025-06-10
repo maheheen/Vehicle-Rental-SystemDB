@@ -333,6 +333,20 @@ ALTER TABLE Customer
 ADD CNICImagePath VARCHAR(255);
 
 
+CREATE VIEW ViewAvailableVehicles AS
+SELECT 
+    VehicleID, 
+    Brand, 
+    Model, 
+    MakeYear, 
+    SeatingCapacity, 
+    TransmissionType, 
+    Rate
+FROM Vehicle
+WHERE Available = 1;
+
+
+
 --EXEC sp_rename 'Role', 'UserRole';
 --SELECT * FROM Customer
 --SELECT * FROM Vehicle
