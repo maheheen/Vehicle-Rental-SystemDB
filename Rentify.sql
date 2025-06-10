@@ -10,8 +10,7 @@ SELECT * FROM UserRole;
 SELECT * FROM VehicleType;
 SELECT * FROM UserLogin;
 SELECT * FROM Rental;
-TRUNCATE TABLE UserLogin;
-
+TRUNCATE TABLE Customer;
 
 
 USE VehicleRentalSystem
@@ -40,6 +39,7 @@ CREATE TABLE Vehicle (
     TypeID INT,
 	FuelTypeID INT,
 	RATE INT,
+	Available BIT DEFAULT 1,
 	FOREIGN KEY (FuelTypeID) REFERENCES FuelType(FuelTypeID),
     FOREIGN KEY (TypeID) REFERENCES VehicleType(TypeID)
 );
@@ -107,25 +107,24 @@ CREATE TABLE UserRole (     --identify if its customer, admin or superadmin
     RoleName VARCHAR(20) UNIQUE NOT NULL
 );
 
-
-INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate)
+INSERT INTO Vehicle 
+(Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available)
 VALUES
-('Toyota', 'Corolla', 2020, 'ABC-1234', 5, 'Automatic', 1, 1, 5000),
-('Honda', 'Civic', 2019, 'XYZ-5678', 5, 'Manual', 1, 1, 4800),
-('Suzuki', 'WagonR', 2021, 'LMN-9012', 5, 'Automatic', 2, 1, 3000),
-('Kia', 'Sportage', 2022, 'KIA-3456', 5, 'Automatic', 3, 2, 8000),
-('Hyundai', 'Tucson', 2023, 'HYU-7890', 5, 'Automatic', 3, 2, 8200),
-('Nissan', 'Dayz', 2018, 'NIS-1122', 4, 'Automatic', 2, 1, 2500),
-('Toyota', 'Hiace', 2021, 'HI-3344', 15, 'Manual', 4, 2, 10000),
-('Honda', 'BR-V', 2020, 'BRV-5566', 7, 'Automatic', 3, 1, 6500),
-('Suzuki', 'Alto', 2022, 'ALT-7788', 4, 'Manual', 2, 1, 2700),
-('Toyota', 'Fortuner', 2023, 'FOR-9900', 7, 'Automatic', 3, 2, 12000),
-('Daihatsu', 'Mira', 2019, 'MIR-1235', 4, 'Automatic', 2, 1, 2800),
-('Honda', 'City', 2018, 'CTY-4567', 5, 'Manual', 1, 1, 4500),
-('Hyundai', 'Elantra', 2022, 'ELA-8901', 5, 'Automatic', 1, 2, 7000),
-('Kia', 'Picanto', 2021, 'PIC-2345', 4, 'Automatic', 2, 1, 3200),
-('Toyota', 'Land Cruiser', 2023, 'LCR-6789', 7, 'Automatic', 3, 2, 15000);
-
+('Toyota', 'Corolla', 2020, 'ABC-1234', 5, 'Automatic', 1, 1, 5000, 1),
+('Honda', 'Civic', 2019, 'XYZ-5678', 5, 'Manual', 1, 1, 4800, 1),
+('Suzuki', 'WagonR', 2021, 'LMN-9012', 5, 'Automatic', 2, 1, 3000, 1),
+('Kia', 'Sportage', 2022, 'KIA-3456', 5, 'Automatic', 3, 2, 8000, 0),
+('Hyundai', 'Tucson', 2023, 'HYU-7890', 5, 'Automatic', 3, 2, 8200, 1),
+('Nissan', 'Dayz', 2018, 'NIS-1122', 4, 'Automatic', 2, 1, 2500, 0),
+('Toyota', 'Hiace', 2021, 'HI-3344', 15, 'Manual', 4, 2, 10000, 1),
+('Honda', 'BR-V', 2020, 'BRV-5566', 7, 'Automatic', 3, 1, 6500, 1),
+('Suzuki', 'Alto', 2022, 'ALT-7788', 4, 'Manual', 2, 1, 2700, 0),
+('Toyota', 'Fortuner', 2023, 'FOR-9900', 7, 'Automatic', 3, 2, 12000, 1),
+('Daihatsu', 'Mira', 2019, 'MIR-1235', 4, 'Automatic', 2, 1, 2800, 1),
+('Honda', 'City', 2018, 'CTY-4567', 5, 'Manual', 1, 1, 4500, 0),
+('Hyundai', 'Elantra', 2022, 'ELA-8901', 5, 'Automatic', 1, 2, 7000, 1),
+('Kia', 'Picanto', 2021, 'PIC-2345', 4, 'Automatic', 2, 1, 3200, 1),
+('Toyota', 'Land Cruiser', 2023, 'LCR-6789', 7, 'Automatic', 3, 2, 15000, 1);
 
 
 INSERT INTO FuelType (FuelName, FuelRate)
@@ -260,6 +259,7 @@ BEGIN
     INSERT INTO UserLogin (Username, PasswordHash, RoleID)
     VALUES (@Username, @PasswordHash, @RoleID);
 END;
+
 CREATE PROCEDURE UpdateAdmins
     @LoginID INT,
     @Username VARCHAR(50),
@@ -328,6 +328,9 @@ BEGIN
         @DrivingLicenseNumber, @NationalIDNumber, @CNICImagePath, @LoginID
     );
 END;
+
+ALTER TABLE Customer
+ADD CNICImagePath VARCHAR(255);
 
 
 --EXEC sp_rename 'Role', 'UserRole';
