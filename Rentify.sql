@@ -502,3 +502,19 @@ VALUES
 
 
 
+SELECT * FROM Booking
+
+--dawar
+CREATE TABLE Booking (
+    BookingID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    VehicleID INT NOT NULL,
+    StartDate DATE NOT NULL,
+    ReturnDate DATE NOT NULL,
+    TotalDays INT NOT NULL,
+    TotalAmount INT NOT NULL,
+    BookingDate DATETIME DEFAULT GETDATE(),
+    Status VARCHAR(20) DEFAULT 'Confirmed',
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicle(VehicleID)
+);
