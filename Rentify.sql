@@ -14,6 +14,7 @@ TRUNCATE TABLE Customer;
 
 
 USE VehicleRentalSystem
+Use VehicleRentalSystem_Edited
 
 CREATE TABLE Customer (
     CustomerID INT PRIMARY KEY IDENTITY(1,1),
@@ -363,6 +364,140 @@ WHERE Available = 1;
 --EXEC sp_rename 'LoginID' , 'UserLogin';
 
 
+
+
+---- Amna edits ---
+
+
+--ALTER TABLE Customer
+--ADD CNICImagePath VARCHAR(255);
+-- DROP PROCEDURE RegisterCustomers
+
+--CREATE PROCEDURE RegisterCustomers
+--    @Username VARCHAR(50),
+--    @PasswordHash VARCHAR(255),
+--    @FirstName VARCHAR(50),
+--    @LastName VARCHAR(50),
+--    @Email VARCHAR(100),
+--    @PhoneNumber VARCHAR(20),
+--    @HomeAddress VARCHAR(255),
+--    @DrivingLicenseNumber VARCHAR(30),
+--    @NationalIDNumber VARCHAR(30),
+--    @CNICImagePath VARCHAR(255),
+--    @RoleID INT = 1
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
+
+--    INSERT INTO UserLogin (Username, PasswordHash, RoleID)
+--    VALUES (@Username, @PasswordHash, @RoleID);
+
+--    DECLARE @LoginID INT = SCOPE_IDENTITY();
+
+--    INSERT INTO Customer (
+--        FirstName, LastName, Email, PhoneNumber, HomeAddress,
+--        DrivingLicenseNumber, NationalIDNumber, CNICImagePath, LoginID
+--    )
+--    VALUES (
+--        @FirstName, @LastName, @Email, @PhoneNumber, @HomeAddress,
+--        @DrivingLicenseNumber, @NationalIDNumber, @CNICImagePath, @LoginID
+--    );
+--END;
+
+--USE VehicleRentalSystem_Edited;
+--GO
+
+--ALTER PROCEDURE RegisterCustomers
+--    @Username VARCHAR(50),
+--    @PasswordHash VARCHAR(255),
+--    @FirstName VARCHAR(50),
+--    @LastName VARCHAR(50),
+--    @Email VARCHAR(100),
+--    @PhoneNumber VARCHAR(20),
+--    @HomeAddress VARCHAR(255),
+--    @DrivingLicenseNumber VARCHAR(30),
+--    @NationalIDNumber VARCHAR(30),
+--    @CNICImagePath VARCHAR(255),
+--    @RoleID INT = 1
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
+
+--    INSERT INTO UserLogin (Username, PasswordHash, RoleID)
+--    VALUES (@Username, @PasswordHash, @RoleID);
+
+--    DECLARE @LoginID INT = SCOPE_IDENTITY();
+
+--    INSERT INTO Customer (
+----        FirstName, LastName, Email, PhoneNumber, HomeAddress,
+----        DrivingLicenseNumber, NationalIDNumber, CNICImagePath, LoginID
+----    )
+----    VALUES (
+----        @FirstName, @LastName, @Email, @PhoneNumber, @HomeAddress,
+----        @DrivingLicenseNumber, @NationalIDNumber, @CNICImagePath, @LoginID
+----    );
+----END;
+
+
+----SELECT * FROM Customer
+----SELECT * FROM UserLogin
+
+--SELECT * FROM Vehicle
+
+----ALTER TABLE Vehicle ADD Available BIT DEFAULT 1;
+
+--CREATE TABLE VehicleBrand (
+--    BrandID INT PRIMARY KEY IDENTITY(1,1),
+--    BrandName VARCHAR(50)
+--);
+
+
+-- 18th June Edits Amna
+
+-- Add more Suzuki models
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('Suzuki', 'Swift', 2021, 'SWF-1111', 5, 'Manual', 2, 1, 3400, 1),
+('Suzuki', 'Cultus', 2022, 'CLT-2222', 5, 'Automatic', 2, 1, 3600, 1),
+('Suzuki', 'Mehran', 2018, 'MHR-3333', 4, 'Manual', 2, 1, 2200, 1),
+('Suzuki', 'Baleno', 2019, 'BLN-4444', 5, 'Manual', 1, 1, 3000, 1);
+
+-- Add more Toyota model
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('Toyota', 'Yaris', 2020, 'YRS-5555', 5, 'Automatic', 1, 1, 4900, 1);
+
+-- Add more Honda models
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('Honda', 'Accord', 2021, 'ACD-6666', 5, 'Automatic', 1, 1, 6500, 1),
+('Honda', 'Vezel', 2022, 'VZL-7777', 5, 'Automatic', 3, 3, 8200, 1);
+
+-- Add more Kia model
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('Kia', 'Stonic', 2022, 'KST-8888', 5, 'Automatic', 3, 2, 7500, 1);
+
+-- Add more Hyundai model
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('Hyundai', 'Sonata', 2021, 'HYS-9999', 5, 'Automatic', 1, 2, 7200, 1);
+
+-- Add more Nissan model
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('Nissan', 'Sunny', 2019, 'NIS-1110', 5, 'Manual', 1, 1, 4000, 1);
+
+-- Add MG brand
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('MG', 'HS', 2023, 'MGH-2221', 5, 'Automatic', 3, 3, 9000, 1),
+('MG', 'ZS EV', 2022, 'MGZ-2233', 5, 'Automatic', 3, 4, 8800, 1);
+
+-- Add Chevrolet brand
+INSERT INTO Vehicle (Brand, Model, MakeYear, RegNumber, SeatingCapacity, TransmissionType, TypeID, FuelTypeID, Rate, Available) 
+VALUES 
+('Chevrolet', 'Spark', 2018, 'CHS-4455', 4, 'Manual', 2, 1, 3100, 1);
 
 
 
