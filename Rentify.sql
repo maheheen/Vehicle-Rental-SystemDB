@@ -331,7 +331,7 @@ BEGIN
 END;
 
 ALTER TABLE Customer
-ADD CNICImagePath VARCHAR(255);
+ADD CNICImagePath VARCHAR(255) NOT NULL;
 
 
 CREATE VIEW ViewAvailableVehicles AS
@@ -518,3 +518,72 @@ CREATE TABLE Booking (
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
     FOREIGN KEY (VehicleID) REFERENCES Vehicle(VehicleID)
 );
+
+--CREATE TABLE Payment (
+--    PaymentID INT PRIMARY KEY IDENTITY(1,1),
+--    CustomerID INT,
+--    CardNumber VARCHAR(20),
+--    CardHolderName VARCHAR(100),
+--    ExpiryDate DATE,
+--    --CVV VARCHAR(4),
+--    PaymentDate DATETIME DEFAULT GETDATE(),
+--    Amount INT,
+--    Status VARCHAR(20),
+--    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+--);
+CREATE TABLE Payment (
+    PaymentID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+    MaskedCardNumber VARCHAR(20),          -- only store last 4 digits (e.g., **** **** **** 1234)
+    CardHolderName VARCHAR(100),           -- acceptable if not processing the card
+    ExpiryMonth INT CHECK (ExpiryMonth BETWEEN 1 AND 12),
+    ExpiryYear INT CHECK (ExpiryYear >= YEAR(GETDATE())), -- basic validation
+    PaymentDate DATETIME DEFAULT GETDATE(),
+    Amount INT NOT NULL CHECK (Amount > 0),
+    Status VARCHAR(20) CHECK (Status IN ('Pending', 'Paid', 'Failed', 'Refunded'))
+);
+SELECT * FROM Payment;
+
+CREATE PROCEDURE UpdatePaymentStatus
+    @PaymentID INT,
+    @NewStatus VARCHAR(20)
+AS
+BEGIN
+    UPDATE Payment
+    SET Status = @NewStatus
+    WHERE PaymentID = @PaymentID;
+END;
+GO
+
+CREATE VIEW ViewPaymentsWithCustomerInfo AS
+SELECT 
+    p.PaymentID,
+    p.CustomerID,
+    c.FirstName + ' ' + c.LastName AS CustomerName,
+    p.MaskedCardNumber,
+    p.CardHolderName,
+    p.ExpiryMonth,
+    p.ExpiryYear,
+    p.Amount,
+    p.Status,
+    p.PaymentDate
+FROM Payment p
+JOIN Customer c ON p.CustomerID = c.CustomerID;
+GO
+
+
+--list the names of the users rented vehicle between range 1 june to 19 june with fuel type diesel
+
+
+SELECT * FROM Booking
+
+
+SELECT b.CustomerID, b.VehicleID 
+FROM Booking b
+JOIN Vehicle v
+ON v.VehicleID = b.VehicleID
+JOIN FuelType ft
+ON ft.FuelTypeID = v.FuelTypeID
+WHERE ft.FuelName = 'Diesel'
+AND 
+b.StartDate = '2025-06-01' and b.ReturnDate = '2025-06-19';
